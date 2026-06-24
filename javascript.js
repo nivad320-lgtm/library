@@ -1,4 +1,8 @@
+const container = document.querySelector('.container');
 const myLibrary = [];
+
+const bookList = document.createElement('div');
+container.appendChild(bookList);
 
 function Book(name, author, pages, read) {
   // the constructor...
@@ -12,21 +16,22 @@ function Book(name, author, pages, read) {
 function addBookToLibrary(name, author, pages, read) {
   // take params, create a book then store it in the array
   myLibrary.push(new Book(name, author, pages, read));
+  updateLibraryList(myLibrary)
 }
 
+// Testing the function
 addBookToLibrary('steve', 'walter', 333, true);
 addBookToLibrary('Diary', 'walter', 333, true);
 console.table(myLibrary);
 
 
-const container = document.querySelector('.container');
-const bookList = document.createElement('div');
-container.appendChild(bookList);
-
-for(book of myLibrary) {
-  const bookDescription = document.createElement('p');
-  bookDescription.textContent = `${book.name} by ${book.author}. ${book.pages}pages. Status: ${book.read}`;
-  bookList.appendChild(bookDescription);
+function updateLibraryList(libraryArray){
+  bookList.replaceChildren();
+  for(book of libraryArray) {
+    const bookDescription = document.createElement('p');
+    bookDescription.textContent = `${book.name} by ${book.author}. ${book.pages}pages. Status: ${book.read}`;
+    bookList.appendChild(bookDescription);
+  }
 }
 
 
@@ -56,9 +61,5 @@ confirmBtn.addEventListener("click", (event) => {
   favDialog.close(bookPages.value);
   favDialog.close(bookTitle.value);
   
-  const bookDescription = document.createElement('p');
-  bookDescription.textContent = `${bookTitle.value} by ${bookAuthor.value}. ${bookPages.value}pages. Status: ${selectEl.value}`;
-  bookList.appendChild(bookDescription);
-
-
+  addBookToLibrary(bookTitle.value, bookAuthor.value, bookPages.value, selectEl.value)
 });
