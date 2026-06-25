@@ -11,6 +11,11 @@ function Book(name, author, pages, read) {
   this.pages = pages;
   this.read = read;
   this.id = crypto.randomUUID();
+  
+  this.changeRead = function() {
+    this.read = this.read === true ? false : true;
+    updateLibraryList(myLibrary);
+  }
 }
 
 function addBookToLibrary(name, author, pages, read) {
@@ -74,5 +79,7 @@ confirmBtn.addEventListener("click", (event) => {
   favDialog.close(bookPages.value);
   favDialog.close(bookTitle.value);
   
-  addBookToLibrary(bookTitle.value, bookAuthor.value, bookPages.value, selectEl.value)
+  let bool = selectEl.value === "yes";
+
+  addBookToLibrary(bookTitle.value, bookAuthor.value, Number(bookPages.value), bool)
 });
