@@ -11,17 +11,17 @@ function Book(name, author, pages, read) {
   this.pages = pages;
   this.read = read;
   this.id = crypto.randomUUID();
-  
-  this.changeRead = function() {
+}
+
+Book.prototype.changeRead = function() {
     this.read = this.read === true ? false : true;
     updateLibraryList(myLibrary);
-  }
 }
 
 function addBookToLibrary(name, author, pages, read) {
   // take params, create a book then store it in the array
   myLibrary.push(new Book(name, author, pages, read));
-  updateLibraryList(myLibrary)
+  updateLibraryList(myLibrary);
 }
 
 // Testing the function
@@ -32,10 +32,22 @@ console.table(myLibrary);
 
 function updateLibraryList(libraryArray){
   bookList.replaceChildren();
-  for(book of libraryArray) {
+  for(let book of libraryArray) {
     const bookDescription = document.createElement('p');
     bookDescription.textContent = `${book.name} by ${book.author}. ${book.pages}pages. Status: ${book.read}`;
     bookDescription.dataset.indexNumber = book.id;
+
+    const bookChangeReadBtn = document.createElement('button');
+    bookChangeReadBtn.classList.add("changeReadBtn");
+    bookChangeReadBtn.textContent = 'switch';
+    bookChangeReadBtn.addEventListener('click', () => {
+      console.log(myLibrary.findIndex(({id}) => id === bookChangeReadBtn.parentElement.dataset.indexNumber));
+      myLibrary[myLibrary.findIndex(({id}) => id === bookChangeReadBtn.parentElement.dataset.indexNumber)].changeRead();
+      console.log(book.id);
+      // myLibrary[findIndex(({id}) => id === bookChangeReadBtn.parentElement.dataset.indexNumber)].changeRead();
+    })
+
+    bookDescription.appendChild(bookChangeReadBtn);
 
     const bookDeleteBtn = document.createElement('button');
     bookDeleteBtn.classList.add("removeBtn");
