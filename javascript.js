@@ -30,6 +30,19 @@ function updateLibraryList(libraryArray){
   for(book of libraryArray) {
     const bookDescription = document.createElement('p');
     bookDescription.textContent = `${book.name} by ${book.author}. ${book.pages}pages. Status: ${book.read}`;
+    bookDescription.dataset.indexNumber = book.id;
+
+    const bookDeleteBtn = document.createElement('button');
+    bookDeleteBtn.classList.add("removeBtn");
+    bookDeleteBtn.textContent = 'remove';
+    bookDeleteBtn.addEventListener('click', () => {
+      console.log(bookDeleteBtn.parentElement.dataset.indexNumber);
+      myLibrary.splice(myLibrary.findIndex(({id}) => id === bookDeleteBtn.parentElement.dataset.indexNumber), 1);
+      updateLibraryList(myLibrary);
+    });
+
+    bookDescription.appendChild(bookDeleteBtn);
+
     bookList.appendChild(bookDescription);
   }
 }
